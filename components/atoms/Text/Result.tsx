@@ -6,7 +6,12 @@ interface ResultProps {
 }
 const Result = ({ text, variant }: ResultProps): JSX.Element => {
   return (
-    <Text as="pre" colorScheme={variant === 'past' ? 'gray' : undefined}>
+    <Text
+      as="pre"
+      colorScheme={variant === 'past' ? 'gray' : undefined}
+      fontSize="3xl"
+      align="right"
+    >
       {text}
     </Text>
   )

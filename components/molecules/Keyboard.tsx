@@ -1,5 +1,5 @@
 import { SimpleGrid } from '@chakra-ui/react'
-import Key from 'components/atoms/Key'
+import Key from 'components/atoms/Button/Key'
 import keymap, { KeymapEntry } from 'constants/keymap'
 
 interface KeyboardProps {
@@ -7,7 +7,12 @@ interface KeyboardProps {
 }
 const Keyboard = ({ onKeyPress }: KeyboardProps) => {
   return (
-    <SimpleGrid columns={4} alignItems="stretch">
+    <SimpleGrid
+      columns={4}
+      alignItems="stretch"
+      borderTopColor="gray.900"
+      borderTopWidth={1}
+    >
       {keymap.map((keymapEntry) => (
         <Key key={keymapEntry.label} onKeypress={onKeyPress} {...keymapEntry} />
       ))}

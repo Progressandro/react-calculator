@@ -1,25 +1,39 @@
 import { Flex, Grid } from '@chakra-ui/react'
 import Keyboard from 'components/molecules/Keyboard'
 import Screen from 'components/molecules/Screen'
-import { KeymapEntry } from 'constants/keymap'
+import { KeymapEntry, ValidOperations } from 'constants/keymap'
 import { useCallback, useState } from 'react'
 
 const Calculator = () => {
-  const [results, setResults] = useState([])
-  const [current, setCurrent] = useState('')
+  const [results, setResults] = useState<string[]>([])
+  const [current, setCurrent] = useState<string>('')
+
+  const handleEqual = useCallback(() => {
+    setResults([current, ...results])
+  }, [results, current])
 
   const handleKeyPress = useCallback(
     ({ operation, value }: KeymapEntry) => {
+      if (operation === ValidOperations.NUMBER && current.length >= 8) return
+
+      const nonZeroCurrent = current === '0' ? '' : current
       switch (operation) {
-        case 'number':
-          setCurrent(current + value)
+        case ValidOperations.NUMBER:
+          setCurrent(nonZeroCurrent + value)
+          break
+        case ValidOperations.ERASE:
+          setCurrent(current.slice(0, -1) || '0')
+          break
+        case ValidOperations.EQUAL:
+          handleEqual()
           break
         default:
           console.error('Undefined operation', operation)
       }
     },
-    [current]
+    [current, handleEqual]
   )
+
   return (
     <Flex w="full" h="full" justify="center">
       <Grid
@@ -32,7 +46,7 @@ const Calculator = () => {
         borderRadius={8}
         boxShadow="0 0 8px rgba(0, 0, 0, 0.25)"
       >
-        <Screen lines={[...results, current]} />
+        <Screen lines={[current, ...results]} />
         <Keyboard onKeyPress={handleKeyPress} />
       </Grid>
     </Flex>
