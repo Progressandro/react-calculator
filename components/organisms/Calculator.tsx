@@ -2,15 +2,60 @@ import { Flex, Grid } from '@chakra-ui/react'
 import Keyboard from 'components/molecules/Keyboard'
 import Screen from 'components/molecules/Screen'
 import { KeymapEntry, ValidOperations } from 'constants/keymap'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 const Calculator = () => {
-  const [results, setResults] = useState<string[]>([])
   const [current, setCurrent] = useState<string>('')
+  const [acum, setAcum] = useState<number>(0)
+  const [lastOperator, setLastOperator] = useState<ValidOperations | null>(null)
+
+  const handleOperation = useCallback(
+    (operation: ValidOperations | null, updateCurrent = false) => {
+      let newResult
+      switch (operation) {
+        case ValidOperations.ADD:
+          newResult = acum + parseFloat(current)
+          break
+        case ValidOperations.SUBTRACT:
+          newResult = acum - parseFloat(current)
+          break
+        case ValidOperations.MULTIPLY:
+          newResult = acum * parseFloat(current)
+          break
+        case ValidOperations.DIVIDE:
+          newResult = acum / parseFloat(current)
+          break
+        default:
+          console.error('Undefined operation', operation)
+      }
+      console.log(lastOperator)
+      if (newResult && lastOperator !== ValidOperations.EQUAL) {
+        setAcum(newResult)
+      }
+      setLastOperator(operation === ValidOperations.EQUAL ? null : operation)
+      if (updateCurrent && newResult) {
+        setCurrent(newResult?.toString())
+        setLastOperator(null)
+      } else {
+        setCurrent('')
+      }
+    },
+    [acum, current]
+  )
 
   const handleEqual = useCallback(() => {
-    setResults([current, ...results])
-  }, [results, current])
+    if (lastOperator) {
+      const aux = lastOperator
+      handleOperation(aux, true)
+      setLastOperator(ValidOperations.EQUAL)
+    }
+  }, [lastOperator, handleOperation])
+
+  const handleReset = useCallback(() => {
+    setCurrent('')
+    setAcum(0)
+    setLastOperator(null)
+  }, [])
 
   const handleKeyPress = useCallback(
     ({ operation, value }: KeymapEntry) => {
@@ -24,15 +69,28 @@ const Calculator = () => {
         case ValidOperations.ERASE:
           setCurrent(current.slice(0, -1) || '0')
           break
+        case ValidOperations.ADD:
+        case ValidOperations.SUBTRACT:
+        case ValidOperations.MULTIPLY:
+        case ValidOperations.DIVIDE:
+          handleOperation(operation)
+          break
         case ValidOperations.EQUAL:
           handleEqual()
+          break
+        case ValidOperations.RESET:
+          handleReset()
           break
         default:
           console.error('Undefined operation', operation)
       }
     },
-    [current, handleEqual]
+    [current, handleOperation, handleEqual]
   )
+
+  useEffect(() => {
+    console.log({ current, acum, lastOperator })
+  }, [current, acum, lastOperator])
 
   return (
     <Flex w="full" h="full" justify="center">
