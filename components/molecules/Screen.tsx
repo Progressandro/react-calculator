@@ -1,26 +1,23 @@
-import { Stack } from '@chakra-ui/react'
-import Result from 'components/atoms/Text/Result'
+import { Box, Flex, Text } from '@chakra-ui/react'
 
 interface ScreenProps {
-  lines: string[]
+  text: string
 }
-const Screen = ({ lines }: ScreenProps) => {
+const Screen = ({ text }: ScreenProps) => {
   return (
-    <Stack
+    <Flex
       w="full"
       h="full"
-      direction="column-reverse"
-      p="2em"
-      overflowY="scroll"
+      bg="black"
+      color="white"
+      p={4}
+      justify="end"
+      align="end"
     >
-      {lines.map((line, index) => (
-        <Result
-          key={index}
-          variant={index === lines.length ? 'current' : 'past'}
-          text={line}
-        />
-      ))}
-    </Stack>
+      <Text as="pre" fontSize="3xl">
+        {text}
+      </Text>
+    </Flex>
   )
 }
 

@@ -41,12 +41,12 @@ const Calculator = () => {
         h={600}
         backgroundColor="black"
         templateColumns="1fr"
-        templateRows="1fr 2fr"
+        templateRows="1fr 6fr"
         p={4}
         borderRadius={8}
         boxShadow="0 0 8px rgba(0, 0, 0, 0.25)"
       >
-        <Screen lines={[current, ...results]} />
+        <Screen text={current} />
         <Keyboard onKeyPress={handleKeyPress} />
       </Grid>
     </Flex>
