@@ -1,11 +1,10 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import type { GetStaticProps, NextPage } from 'next'
-import { useTranslation } from 'next-i18next'
+import CalculatorView from 'components/templates/CalculatorView'
 
 const Home: NextPage = () => {
-  const { t } = useTranslation('common')
-  return <h1>{t('title')}</h1>
+  return <CalculatorView />
 }
 
 export async function getStaticProps({
