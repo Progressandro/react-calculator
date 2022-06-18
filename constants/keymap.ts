@@ -1,8 +1,21 @@
 import { ButtonProps } from '@chakra-ui/react'
 
+export enum ValidOperations {
+  CANCEL = 'cancel',
+  RESET = 'reset',
+  ERASE = 'erase',
+  DIVIDE = 'divide',
+  NUMBER = 'number',
+  ADD = 'add',
+  SUBTRACT = 'subtract',
+  MULTIPLY = 'multiply',
+  EQUAL = 'equal',
+  DECIMAL = 'decimal',
+  NEGATE = 'negate',
+}
 export interface KeymapEntry {
   label: string
-  operation: string
+  operation: ValidOperations
   value?: number
   keyProps?: ButtonProps
 }
@@ -10,93 +23,93 @@ export interface KeymapEntry {
 const keymap: KeymapEntry[] = [
   {
     label: 'C',
-    operation: 'cancel',
+    operation: ValidOperations.CANCEL,
   },
   {
     label: 'AC',
-    operation: 'reset',
+    operation: ValidOperations.RESET,
   },
   {
     label: '␡',
-    operation: 'erase',
+    operation: ValidOperations.ERASE,
   },
   {
     label: '/',
-    operation: 'divide',
+    operation: ValidOperations.DIVIDE,
   },
   {
     label: '7',
-    operation: 'number',
+    operation: ValidOperations.NUMBER,
     value: 7,
   },
   {
     label: '8',
-    operation: 'number',
+    operation: ValidOperations.NUMBER,
     value: 8,
   },
   {
     label: '9',
-    operation: 'number',
+    operation: ValidOperations.NUMBER,
     value: 9,
   },
   {
     label: '⨉',
-    operation: 'multiply',
+    operation: ValidOperations.MULTIPLY,
   },
   {
     label: '4',
-    operation: 'number',
+    operation: ValidOperations.NUMBER,
     value: 4,
   },
   {
     label: '5',
-    operation: 'number',
+    operation: ValidOperations.NUMBER,
     value: 5,
   },
   {
     label: '6',
-    operation: 'number',
+    operation: ValidOperations.NUMBER,
     value: 6,
   },
   {
     label: '-',
-    operation: 'subtract',
+    operation: ValidOperations.SUBTRACT,
   },
   {
     label: '1',
-    operation: 'number',
+    operation: ValidOperations.NUMBER,
     value: 1,
   },
   {
     label: '2',
-    operation: 'number',
+    operation: ValidOperations.NUMBER,
     value: 2,
   },
   {
     label: '3',
-    operation: 'number',
+    operation: ValidOperations.NUMBER,
     value: 3,
   },
   {
     label: '+',
-    operation: 'add',
+    operation: ValidOperations.ADD,
   },
   {
     label: '+/-',
-    operation: 'negate',
+    operation: ValidOperations.NEGATE,
   },
   {
     label: '0',
-    operation: 'number',
+    operation: ValidOperations.NUMBER,
     value: 0,
   },
   {
     label: '.',
-    operation: 'decimal',
+    operation: ValidOperations.DECIMAL,
   },
   {
     label: '=',
-    operation: 'equals',
+    operation: ValidOperations.EQUAL,
     keyProps: {
       borderRadius: '100%',
       variant: 'solid',

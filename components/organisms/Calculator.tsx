@@ -1,8 +1,25 @@
 import { Flex, Grid } from '@chakra-ui/react'
 import Keyboard from 'components/molecules/Keyboard'
 import Screen from 'components/molecules/Screen'
+import { KeymapEntry } from 'constants/keymap'
+import { useCallback, useState } from 'react'
 
 const Calculator = () => {
+  const [results, setResults] = useState([])
+  const [current, setCurrent] = useState('')
+
+  const handleKeyPress = useCallback(
+    ({ operation, value }: KeymapEntry) => {
+      switch (operation) {
+        case 'number':
+          setCurrent(current + value)
+          break
+        default:
+          console.error('Undefined operation', operation)
+      }
+    },
+    [current]
+  )
   return (
     <Flex w="full" h="full" justify="center">
       <Grid
@@ -15,8 +32,8 @@ const Calculator = () => {
         borderRadius={8}
         boxShadow="0 0 8px rgba(0, 0, 0, 0.25)"
       >
-        <Screen />
-        <Keyboard />
+        <Screen lines={[...results, current]} />
+        <Keyboard onKeyPress={handleKeyPress} />
       </Grid>
     </Flex>
   )
