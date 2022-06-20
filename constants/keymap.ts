@@ -16,7 +16,7 @@ export enum ValidOperations {
 export interface KeymapEntry {
   label: string
   operation: ValidOperations
-  value?: number
+  value?: number | '.'
   keyProps?: ButtonProps
 }
 
@@ -105,7 +105,8 @@ const keymap: KeymapEntry[] = [
   },
   {
     label: '.',
-    operation: ValidOperations.DECIMAL,
+    operation: ValidOperations.NUMBER,
+    value: '.',
   },
   {
     label: '=',

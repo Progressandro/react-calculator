@@ -2,7 +2,7 @@ import { Flex, Grid } from '@chakra-ui/react'
 import Keyboard from 'components/molecules/Keyboard'
 import Screen from 'components/molecules/Screen'
 import { KeymapEntry, ValidOperations } from 'constants/keymap'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 const Calculator = () => {
   const [current, setCurrent] = useState<string>('')
@@ -11,6 +11,12 @@ const Calculator = () => {
 
   const handleOperation = useCallback(
     (operation: ValidOperations | null, updateCurrent = false) => {
+      if (acum === 0 && !lastOperator) {
+        setAcum(parseFloat(current))
+        setCurrent('')
+        setLastOperator(operation === ValidOperations.EQUAL ? null : operation)
+        return
+      }
       let newResult
       switch (operation) {
         case ValidOperations.ADD:
@@ -28,7 +34,6 @@ const Calculator = () => {
         default:
           console.error('Undefined operation', operation)
       }
-      console.log(lastOperator)
       if (newResult && lastOperator !== ValidOperations.EQUAL) {
         setAcum(newResult)
       }
@@ -40,11 +45,11 @@ const Calculator = () => {
         setCurrent('')
       }
     },
-    [acum, current]
+    [acum, current, lastOperator]
   )
 
   const handleEqual = useCallback(() => {
-    if (lastOperator) {
+    if (lastOperator && lastOperator !== ValidOperations.EQUAL) {
       const aux = lastOperator
       handleOperation(aux, true)
       setLastOperator(ValidOperations.EQUAL)
@@ -85,12 +90,8 @@ const Calculator = () => {
           console.error('Undefined operation', operation)
       }
     },
-    [current, handleOperation, handleEqual]
+    [current, handleOperation, handleEqual, handleReset]
   )
-
-  useEffect(() => {
-    console.log({ current, acum, lastOperator })
-  }, [current, acum, lastOperator])
 
   return (
     <Flex w="full" h="full" justify="center">
