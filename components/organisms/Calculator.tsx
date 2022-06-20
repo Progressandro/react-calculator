@@ -31,8 +31,6 @@ const Calculator = () => {
         case ValidOperations.DIVIDE:
           newResult = acum / parseFloat(current)
           break
-        default:
-          console.error('Undefined operation', operation)
       }
       if (newResult && lastOperator !== ValidOperations.EQUAL) {
         setAcum(newResult)
@@ -87,7 +85,7 @@ const Calculator = () => {
           handleReset()
           break
         default:
-          console.error('Undefined operation', operation)
+          console.warn('Undefined operation', operation)
       }
     },
     [current, handleOperation, handleEqual, handleReset]
